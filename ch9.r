@@ -654,6 +654,7 @@ result
 
 #==========================================
 #==> SVM
+library(caret)
 library(kernlab)
 data('spam')
 summary(spam)
@@ -663,6 +664,8 @@ testindex<-sample(index,trunc(length(index)/3))
 testset<-spam[testindex,]
 trainingset<-spam[-testindex,]
 
-model<-ksvm(type~.,data=trainingset,method='C-classification', kernel='radial', cost=10,gamma=0.1)
-summary(model)
+model<-ksvm(type~.,data=trainingset, kernel='rbfdot', C=1, nu=0.1)
+model
+typeval<-predict(model, testset)
+confusionMatrix(typeval, testset$type)
 
